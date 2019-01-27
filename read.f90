@@ -1,4 +1,4 @@
-subroutine read
+subroutine readinput
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! 

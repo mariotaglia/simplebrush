@@ -12,6 +12,9 @@ subroutine fe(cc, ccc)
 use results
 use chainsdat
 use system
+use kai
+use bulk
+use molecules
 implicit none
 
 integer cc, ccc
@@ -20,7 +23,7 @@ real*8 Free_energy, F_Mix_s, F_Mix_pos
 real*8 F_Mix_neg, F_Mix_Hplus
 real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupol, pilat
 real*8 F_Mix_OHmin, F_Conf, F_Eq, F_vdW, F_eps, F_electro
-integer i, iz
+integer i, iz, iiz
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
 
 
@@ -172,7 +175,7 @@ sum = sumpi + sumrho + sumel
 Free_Energy2 = -(delta/(vsol))*sigma*dlog(q) + sum -F_vdW 
 
 ! Chemical potential chains
-mupol = -dlog(q/shift)
+mupol = -dlog(q)
  
 ! Pilat
 pilat = sigma*delta/vsol*mupol - Free_energy

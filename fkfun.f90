@@ -16,12 +16,14 @@ use solver
 use system
 use molecules
 use bulk
+use const
+use kai
 implicit none
  
 integer ntot
 real*8 x(2*dimz),f(2*dimz)
 real*8 protemp, protemp1
-integer i,j, k, ix, iy, iz, ii, ax, ay, az, temp
+integer i,j, k, ix, iy, iz, ii, ax, ay, az, temp, iiZ
 real*8 temp2
 
 

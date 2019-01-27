@@ -18,15 +18,13 @@ real*8 in1(long,3)
 
 integer k,vx(4),vy(4)
 integer total,ix(3)
-integer i,il,u1,u2,iii,ii,ll
-integer j,ncha
+integer u1,u2,iii,ii,ll
+integer j
 real*8 indax, inday, indaz
-real*8 xend(3,long),chains(3,long,100)
+real*8 xend(3,long)
 real*8 altx,alty,altz,x(long),y(long),xp(long),yp(long)
-      real*8 rij,theta,theta1,pi, rn1, rn2
-      
-
-      integer total1,iglobal
+real*8 rij,theta,theta1,pi, rn1, rn2
+integer total1,iglobal
 
 il=0
 
@@ -34,14 +32,13 @@ do while (il.lt.cuantas)
          
 call cadenas(chains,ncha)
          
-do i=1,ncha
-
-il=il+1
-if(il.gt.cuantas) exit
-in1(:,:)=chains(:,:,ncha)
-call pxs(in1,il)
-
-enddo
+ do i=1,ncha
+  il=il+1
+  if(il.gt.cuantas) exit
+  in1(:,:)=chains(:,:,ncha)
+  call pxs(in1,il)
+ enddo ! ncha
+enddo ! while
 return
 end subroutine
 
@@ -60,14 +57,14 @@ subroutine cadenas(chains,ncha)
 
 
 use chainsdat
-use rands
-use consts
+use rand
+use const
 implicit none
 
 integer ncha
-real*8 chains(3,:,100)
+real*8 chains(3,long,100)
 integer i,state,ii,j,ive,jve
-real*8 rn,state1,pi,sitheta,cotheta,dista,lseg
+real*8 rn, state1,sitheta,cotheta,dista
 real*8 siphip,cophip,rands
 logical test
 
@@ -228,9 +225,12 @@ implicit none
 
 real*8 xend(3,long),rands,xendr(3,long)
 logical test
-integer n,seed
+integer n
 real*8 fac,fac1,fac2,sbe,cbe,sal,cal,sga
-      
+real*8 a,b,c   
+real*8 alfa, cga, gama
+integer i
+ 
 fac=rands(seed)
 fac1=rands(seed)
 fac2=rands(seed)
@@ -268,6 +268,7 @@ subroutine mrrrr(a,b,c)
 
 implicit none
 real*8 a(3,3),b(3,3),c(3,3)
+integer i,j,k
 
 do i=1,3
    do j=1,3

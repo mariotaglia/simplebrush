@@ -10,7 +10,9 @@ use chainsdat
 use system
 use results
 use solver
+use molecules
 implicit none
+
 
 character*5  title
 integer cc, ccc
@@ -66,7 +68,6 @@ call savetodisk(psi, title, cc, ccc)
          write(510,*)'vsalt       = ',vsalt*vsol
          write(510,*)'csalt       = ',csalt
          write(510,*)'pHbulk      = ',pHbulk
-         write(510,*)'pKw         = ',pKw
          write(510,*)'pKa         = ',pKa
          write(510,*)'pK0         = ',-dlog(K0)/dlog(10.0D0)
          write(510,*)'K0          = ',K0
@@ -86,5 +87,33 @@ do i = 1, 2*n
   write(45, *)xflag(i)
 enddo
 close(45)
+
+end subroutine
+
+subroutine savetodisk(array, title, counter, counter2)
+
+use system
+
+integer scx, scy
+integer dimzview
+
+integer ix, iy, iz, i, jx, jy, jz
+real*8 array(dimz)
+real*8 arrayz(dimz)
+integer counter, counter2
+character*5 title
+character*6 titlez
+character*30 filename, tempc
+
+write(filename,'(A5 , A1, I3.3, A1, I3.3, A4)')   & 
+  title,'.', counter,'.', counter2, '.dat'
+open(unit=45, file=filename)
+do iz=1,dimz
+  write(45,*)(iz-0.5)*delta,array(iz)
+enddo
+close(45)
+
+return
+end subroutine
 
 

@@ -9,7 +9,7 @@ subroutine init
 use molecules
 use const
 use bulk
-
+use system
 implicit none
 real*8 Ka
 real*8 cHplus, cOHmin
@@ -37,13 +37,13 @@ xsalt=(csalt*Na/(1.0d24))*(vsalt*vsol)   ! volume fraction salt,csalt in mol/l
 
 if(pHbulk.le.7) then  ! pH<= 7
    xposbulk=xsalt/zpos
-   xnegbulk= -xsalt/zneg - xsalt2/zneg +(xHplusbulk -xOHminbulk) *vsalt ! NaCl+ HCl  
+   xnegbulk= -xsalt/zneg +(xHplusbulk -xOHminbulk) *vsalt ! NaCl+ HCl  
 else                  ! pH >7 
    xposbulk=xsalt/zpos +(xOHminbulk -xHplusbulk) *vsalt ! NaCl+ NaOH   
-   xnegbulk=-xsalt/zneg - xsalt2/zneg
+   xnegbulk=-xsalt/zneg
 endif
 
-xsolbulk=1.0 -xHplusbulk -xOHminbulk - xnegbulk -xposbulk - xposbulk2
+xsolbulk=1.0 -xHplusbulk -xOHminbulk - xnegbulk -xposbulk 
 
 K0 = (Ka*vsol/xsolbulk)*(Na/1.0d24)! intrinstic equilibruim constant 
 

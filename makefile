@@ -1,6 +1,6 @@
 TARGET = brush
 
-SRC = modules.f90 allocation.f90 fkfun.f90 kinsol.f90 pxs.f90 savetodisk.f90 cadenas.f90 init.f90 main.f90 rands.f90 solve.f90 fe.f90 kai.f90 modules.f90 read.f90
+SRC = modules.f90 allocation.f90 fkfun.f90 kinsol.f90 pxs.f90 savetodisk.f90 cadenas.f90 init.f90 main.f90 rands.f90 solve.f90 fe.f90 kai.f90 read.f90
 
 
 HOST=$(shell hostname)
@@ -52,7 +52,7 @@ GIT_VERSION := $(shell git describe --abbrev=6 --dirty --always --tags)
 GFLAGS=-cpp -D_VERSION=\"$(GIT_VERSION)\"
 
 FF = mpif77 #${F90}
-VER = ~/bin/crystal
+VER = ~/bin/brush
 
 all:	$(TARGET)
 

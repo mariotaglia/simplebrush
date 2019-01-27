@@ -15,6 +15,7 @@ subroutine kai
 use const
 use kai
 use system
+use chainsdat
 
 implicit none
 integer seed
@@ -24,7 +25,6 @@ real*8 R,theta,z
 real*8 rn
 integer i, ii, is, js, a, b
 real*8 rands
-real*8 pi
 real*8 x1,x2,y1, y2, z1, z2, vect
 integer iR, ix,iy,iz, itheta
 integer j
@@ -67,7 +67,7 @@ do iz = 1, MCsteps
      vect = sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2) ! vector 
      j = int(anint(z2/delta))                          ! j has the cell with the point to integrate
       
-     if(j.le.ntot) then
+     if(j.le.dimz) then
          if(vect.le.cutoff) then ! inside cutoff sphere
          if(vect.ge.lseg) then   ! outside segment sphere
               Xu(j) = Xu(j) + ((lseg/vect)**6.0) 

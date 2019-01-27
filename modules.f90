@@ -9,7 +9,6 @@ real*8 st
 endmodule
 
 module results
-real*8, allocatable :: xflag(:)
 real*8, allocatable :: xh(:)
 real*8, allocatable :: psi(:)
 real*8, allocatable :: xpos(:)
@@ -18,8 +17,10 @@ real*8, allocatable :: xHplus(:)
 real*8, allocatable :: xOHmin(:)
 real*8, allocatable :: qtot(:)
 real*8, allocatable :: pro(:)
+real*8, allocatable :: avpol(:)
+real*8, allocatable :: fdis(:)
 real*8 q
-end subroutine
+end module
 
 module kai
 integer Xulimit ! cutoff for poor sv interaction in lattice sites
@@ -43,15 +44,18 @@ endmodule
 
 
 module solver
+real*8, allocatable :: xflag(:)
 integer infile
 real*8, parameter :: error = 1.0d-6 ! maximum kinsol norm
+real*8 norma
+integer iter
 endmodule
 
 
 module molecules
 real*8 zpos, zneg, zpol ! charges of cation, anions and polyelectrolyte segment
 real*8 vsalt, vpol      ! volume of salt and polyelectrolyte segments in units of vsol
-real*8 vsal             ! solvent volume 
+real*8 vsol             ! solvent volume 
 real*8 K0
 endmodule
 
@@ -62,8 +66,10 @@ real*8 xsolbulk               ! bulk volume fraction of solvent
 real*8 expmupos, expmuneg, expmuHplus, expmuOHmin  ! exp(-beta*mu)*(bulk volume fraction), where mu is the chemical potential
 endmodule
 
-module rans
+module rand
 integer seed
 endmodule
 
-
+module mkinsol
+double precision, allocatable :: pp(:)
+endmodule

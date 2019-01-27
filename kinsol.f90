@@ -5,16 +5,15 @@
 
       subroutine fkpsol(udata, uscale, fdata, fscale, vv, ftem, ier)
 
-      use chainsdat
+      use mkinsol
+      use system
       implicit none
 
       integer ier
       integer*8 neq, i
-      double precision pp
       double precision udata(*), uscale(*), fdata(*), fscale(*)
       double precision vv(*), ftem(*)
 
-      common /pcom/ pp(2*dimz)
       common /psize/ neq
 
       do  i = 1, neq
@@ -32,17 +31,16 @@
 
       subroutine fkpset(udata, uscale, fdata, fscale,vtemp1,vtemp2, ier)
 
-      use chainsdat
+      use mkinsol
+      use system
       implicit none
 
       integer ier
       integer*8 neq, i
-      double precision pp
       double precision udata(*), uscale(*), fdata(*), fscale(*)
       double precision vtemp1(*), vtemp2(*)
 
 
-      common /pcom/ pp(2*dimz)
       common /psize/ neq
 
       do i = 1, neq/2
@@ -68,8 +66,8 @@
       subroutine call_kinsol(x1, xg1, ier)
 
       
-      use chainsdat
-      implict none
+      use system
+      implicit none
 
       real*8 x1(2*dimz), xg1(2*dimz)
 
@@ -85,6 +83,7 @@
 
       integer *4 ier ! Kinsol error flag
       integer *8 neq ! Kinsol number of equations
+      integer i
 
       common /psize/ neq ! Kinsol
 
