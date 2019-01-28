@@ -71,7 +71,7 @@ xtotal(-Xulimit:0) = 0.0 ! xtotal in surface = 0.0
 ! Calculation of xpot
 
 do iz = 1, dimz
-  xpot(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpol/fdis(iz))
+  xpot(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpol)/fdis(iz)
 
   do iiZ = -Xulimit, Xulimit
     xpot(iz) = xpot(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))

@@ -106,7 +106,7 @@ Free_Energy = Free_Energy + F_Mix_OHmin
 F_Conf = 0.0
 
 do i = 1, cuantas
-  F_Conf = F_Conf + (pro(i)/q)*dlog((pro(i))/q)/vsol*delta*sigma
+  F_Conf = F_Conf + (pro(i)/q)*dlog((pro(i))/q)*sigma
 enddo
 
 Free_Energy = Free_Energy + F_Conf
@@ -172,13 +172,13 @@ sumel = (delta/vsol)*sumel
 
 sum = sumpi + sumrho + sumel
 
-Free_Energy2 = -(delta/(vsol))*sigma*dlog(q) + sum -F_vdW 
+Free_Energy2 = -sigma*dlog(q) + sum -F_vdW 
 
 ! Chemical potential chains
 mupol = -dlog(q)
  
 ! Pilat
-pilat = sigma*delta/vsol*mupol - Free_energy
+pilat = sigma*mupol - Free_energy
 
 ! Save to disk
 
