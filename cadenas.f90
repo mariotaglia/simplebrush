@@ -16,16 +16,15 @@ real*8 chains(3,long,100)
 integer ncha
 real*8 in1(long,3)
 
-integer k,vx(4),vy(4)
+integer vx(4),vy(4)
 integer total,ix(3)
 integer u1,u2,iii,ii,ll
-integer j
 real*8 indax, inday, indaz
 real*8 xend(3,long)
 real*8 altx,alty,altz,x(long),y(long),xp(long),yp(long)
 real*8 rij,theta,theta1,pi, rn1, rn2
 integer total1,iglobal
-
+integer j, k
 il=0
 
 do while (il.lt.cuantas)
@@ -35,7 +34,11 @@ call cadenas(chains,ncha)
  do i=1,ncha
   il=il+1
   if(il.gt.cuantas) exit
-  in1(:,:)=chains(:,:,ncha)
+  do j = 1,long
+   do k = 1,3
+     in1(j,k)=chains(k,j,ncha)
+   enddo
+  enddo
   call pxs(in1,il)
  enddo ! ncha
 enddo ! while
