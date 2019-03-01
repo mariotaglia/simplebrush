@@ -145,6 +145,7 @@ do while (ncha.eq.0)
   m(2,1)=cos(state1)*sitheta
   m(2,2)=-cos(state1)*cotheta
   m(2,3)=sin(state1)
+
   m(3,1)=sin(state1)*sitheta
   m(3,2)=-sin(state1)*cotheta
   m(3,3)=-cos(state1)
@@ -197,18 +198,18 @@ do while (ncha.eq.0)
          enddo
        enddo
 
-enddo ! self-avoding?
+ enddo ! self-avoding?
 
-ncha=0 ! number of chains
+ ncha=0 ! number of chains
 
-  do i=1,300
+ do i=1,300
    test = .true. ! avoidance with the wall
    call rota36(xend,xendr,long,test) ! rotate conformation
    if (test.eqv..false.)cycle
          ncha=ncha+1
          chains(1,:,ncha)=xendr(1,:)
          if (ncha.eq.25)exit
-  enddo
+ enddo
 enddo ! outer loop ncha  
 
 return

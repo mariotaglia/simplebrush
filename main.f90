@@ -18,7 +18,7 @@ print*, 'GIT Version: ', _VERSION
 call readinput  ! reads input variables from file
 call init       ! initialize system dependent variables
 call allocation ! allocates memory
-call kai       ! generates coefficients for poor-sv interactions
+call kais       ! generates coefficients for poor-sv interactions
 call creador    ! create chains conformations
 
 cc = 1

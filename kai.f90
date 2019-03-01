@@ -1,5 +1,5 @@
 
-subroutine kai
+subroutine kais
 
 
 !#####################################################################
@@ -58,18 +58,19 @@ do iz = 1, MCsteps
 
      z1 = 0.5*delta           ! segment is located at the center of a lattice site
      y1 = 0.0
-     z1 = 0.0
+     x1 = 0.0
 
      x2 = xmin + (xmax-xmin)*dfloat(ix-1)/dfloat(MCsteps-1)
      y2 = ymin + (ymax-ymin)*dfloat(iy-1)/dfloat(MCsteps-1)
      z2 = zmin + (zmax-zmin)*dfloat(iz-1)/dfloat(MCsteps-1)
 
      vect = sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2) ! vector 
-     j = int(anint(z2/delta))                          ! j has the cell with the point to integrate
+     j = int(anint((z2-z1)/delta))                          ! j has the cell with the point to integrate
       
      if(j.le.dimz) then
          if(vect.le.cutoff) then ! inside cutoff sphere
          if(vect.ge.lseg) then   ! outside segment sphere
+              if(j.eq.2)print*, vect, x1,x2,y1,y2,z1,z2, delta
               Xu(j) = Xu(j) + ((lseg/vect)**6.0) 
          endif
          endif

@@ -53,8 +53,8 @@ endmodule
 
 
 module molecules
-real*8 zpos, zneg, zpol ! charges of cation, anions and polyelectrolyte segment
-real*8 vsalt, vpol      ! volume of salt and polyelectrolyte segments in units of vsol
+real*8 zpos, zneg, zpol , zpolA, zpolB ! charges of cation, anions and polyelectrolyte segment
+real*8 vsalt, vpol , vpolA, vpolB     ! volume of salt and polyelectrolyte segments in units of vsol
 real*8 vsol             ! solvent volume 
 real*8 K0
 endmodule

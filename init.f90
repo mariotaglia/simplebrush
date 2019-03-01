@@ -1,9 +1,9 @@
 subroutine init
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
+!!
 ! This subroutine initializes input-dependent variables
-!
+!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 use molecules
@@ -18,10 +18,16 @@ real*8 xsalt
 
 zpos = 1.0      ! charge of cation
 zneg = -1.0     ! charge of anion
-zpol = -1.0     ! charge of polyelectrolyte segment
+zpol = -1.0     ! charge of polyelectrolyte segment 
+!zpolA = -1.0      ! charge of polyelectrolyte segment B
+!zpolB = 1.0      ! charge of polyelectrolyte segment B
 vsol = 0.030    ! volume of solvent molecule
 vsalt=((4.0/3.0)*pi*(0.27)**3)/vsol  ! volume salt in units of vsol 0.27=radius salt  
 vpol= 0.095/vsol!                     ! volume polymer segment in units of vsol 
+!vpolA= 0.095/vsol!                     ! volume polymer segment in units of vsol 
+!vpolB= 0.095/vsol!                     ! volume polymer segment in units of vsol 
+
+
 
 constq=delta*delta*4.0*pi*lb/vsol   ! multiplicative factor in poisson eq  
 pKw = 14.0 ! -log10(Kw)
