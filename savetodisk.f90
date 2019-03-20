@@ -21,9 +21,13 @@ integer i, n
 
 n = dimz
 
-! Polymer
-title = 'avpol'
-call savetodisk(avpol, title, cc ,ccc)
+! Polymer A
+title = 'avpoA'
+call savetodisk(avpolA, title, cc ,ccc)
+
+! Polymer B
+title = 'avpoB'
+call savetodisk(avpolB, title, cc ,ccc)
 
 ! Solvent
 title = 'avsol'
@@ -46,9 +50,13 @@ call savetodisk(xHplus, title, cc, ccc)
 title = 'avOHm'
 call savetodisk(xOHmin, title, cc,ccc)
 
-! fdis
-title = 'frdis'
-call savetodisk(fdis, title, cc, ccc)
+! fdisA
+title = 'fdisA'
+call savetodisk(fdisA, title, cc, ccc)
+
+! fdisB
+title = 'fdisB'
+call savetodisk(fdisB, title, cc, ccc)
 
 ! Potencial electrostatico
 title = 'poten'
@@ -64,19 +72,24 @@ call savetodisk(psi, title, cc, ccc)
          write(510,*)'length seg  = ',0.5 ! value see subroutine cadenas
          write(510,*)'delta       = ',delta
          write(510,*)'vsol        = ',vsol
-         write(510,*)'vsol        = ',vpol
+         write(510,*)'vpol        = ',vpol
          write(510,*)'vsalt       = ',vsalt*vsol
          write(510,*)'csalt       = ',csalt
          write(510,*)'pHbulk      = ',pHbulk
-         write(510,*)'pKa         = ',pKa
-         write(510,*)'pK0         = ',-dlog(K0)/dlog(10.0D0)
-         write(510,*)'K0          = ',K0
-         write(510,*)'zpos        = ',zpos
+         write(510,*)'pKaA        = ',pKaA
+         write(510,*)'pK0A         = ',-dlog(K0A)/dlog(10.0D0)
+         write(510,*)'K0A          = ',K0A
+		 write(510,*)'pKaB         = ',pKaB
+         write(510,*)'pK0B         = ',-dlog(K0B)/dlog(10.0D0)
+         write(510,*)'K0B          = ',K0B
+		 write(510,*)'zpos        = ',zpos
          write(510,*)'zneg        = ',zneg
          write(510,*)'cuantas     = ',cuantas
+         write(510,*)'newcuantas     = ',newcuantas
          write(510,*)'iterations  = ',iter
-         write(510,*)'sigma       = ',sigma
-
+         write(510,*)'sigmaA       = ',sigmaA
+         write(510,*)'sigmaB      = ',sigmaB
+		 write(510,*)'Version GIT	  = ',_VERSION
 close(510)
 
 ! Saves solver vector

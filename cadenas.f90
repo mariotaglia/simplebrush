@@ -26,7 +26,7 @@ real*8 rij,theta,theta1,pi, rn1, rn2
 integer total1,iglobal
 integer j, k
 il=0
-
+newcuantas=0
 do while (il.lt.cuantas)
          
 call cadenas(chains,ncha)

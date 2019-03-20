@@ -1,9 +1,11 @@
 module system
 real*8 delta   ! delta is the discretization lenght in z direction
 integer  dimz  ! number of lattice sites in z direction
-real*8 sigma
+real*8 sigmaA
+real*8 sigmaB
 real*8 csalt
-real*8 pKa
+real*8 pKaA
+real*8 pkaB
 real*8 pHbulk
 real*8 st
 endmodule
@@ -16,10 +18,14 @@ real*8, allocatable :: xneg(:)
 real*8, allocatable :: xHplus(:)
 real*8, allocatable :: xOHmin(:)
 real*8, allocatable :: qtot(:)
-real*8, allocatable :: pro(:)
-real*8, allocatable :: avpol(:)
-real*8, allocatable :: fdis(:)
-real*8 q
+real*8, allocatable :: proA(:)
+real*8, allocatable :: proB(:)
+real*8, allocatable :: avpolA(:)
+real*8, allocatable :: fdisA(:)
+real*8 qA
+real*8, allocatable :: avpolB(:)
+real*8, allocatable :: fdisB(:)
+real*8 qB
 end module
 
 module kai
@@ -29,9 +35,11 @@ endmodule
 
 module chainsdat
 integer cuantas  ! number of polyelectrolyte conformations
+integer newcuantas  ! number of polyelectrolyte conformations
 integer long     ! lenght of polyelectrolyte chain
 real*8 lseg
-integer*1, allocatable :: pz(:,:)
+integer*1, allocatable :: pzA(:,:)
+integer*1, allocatable :: pzB(:,:)
 endmodule
 
 module const
@@ -53,10 +61,10 @@ endmodule
 
 
 module molecules
-real*8 zpos, zneg, zpol , zpolA, zpolB ! charges of cation, anions and polyelectrolyte segment
-real*8 vsalt, vpol , vpolA, vpolB     ! volume of salt and polyelectrolyte segments in units of vsol
+real*8 zpos, zneg, zpolA, zpolB ! charges of cation, anions and polyelectrolyte segment
+real*8 vsalt, vpol   ! volume of salt and polyelectrolyte segments in units of vsol
 real*8 vsol             ! solvent volume 
-real*8 K0
+real*8 K0A, K0B
 endmodule
 
 module bulk

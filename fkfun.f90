@@ -27,7 +27,8 @@ integer i,j, k, ix, iy, iz, ii, ax, ay, az, temp, iiZ
 real*8 temp2
 
 
-real*8 xpot(dimz)
+real*8 xpotA(dimz)
+real*8 xpotB(dimz)
 real*8 psi2(0:dimz+1) ! psi plus boundaries at z=0 and dimz+1
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
  
@@ -44,7 +45,7 @@ enddo
 psi2(1:dimz) = psi(1:dimZ)
 
 ! Electrostatic potential boundary conditions
-psi2(dimz+1) = 0.0 ! bulk
+psi2(dimz+1) = psi2(dimz) ! wall, no charge
 psi2(0) = psi2(1)  ! wall, no charge
 
 ! Volume fractions of ions and fdis
@@ -55,8 +56,9 @@ do iz=1,dimz
    xneg(iz) = expmuneg*(xh(iz)**vsalt)*dexp(-psi2(iz)*zneg) ! ion neg volume fraction
    xHplus(iz) = expmuHplus*(xh(iz))*dexp(-psi2(iz))         ! H+ volume fraction
    xOHmin(iz) = expmuOHmin*(xh(iz))*dexp(+psi2(iz))         ! OH-  volume fraction
-   fdis(iz) = 1.0 /(1.0 + xHplus(iz)/(K0*xh(iz)))
-   
+   fdisA(iz) = 1.0 /(1.0 + xHplus(iz)/(K0A*xh(iz)))
+   fdisB(iz) = 1.0 /(1.0 + xOHmin(iz)/(K0B*xh(iz)))
+
 enddo
 
 ! Calculation of xtotal
@@ -71,38 +73,55 @@ xtotal(-Xulimit:0) = 0.0 ! xtotal in surface = 0.0
 ! Calculation of xpot
 
 do iz = 1, dimz
-  xpot(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpol)/fdis(iz)
+  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/fdisA(iz)
+  xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/fdisB(iz)
 
   do iiZ = -Xulimit, Xulimit
-    xpot(iz) = xpot(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))
+    xpotA(iz) = xpotA(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))
+    xpotB(iz) = xpotB(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))
+
   enddo
 enddo
 
 ! Calculation of pro
 
-q = 0.0
-avpol = 0.0
+qA = 0.0
+avpolA = 0.0
+qB = 0.0
+avpolB = 0.0
   
-do i=1,cuantas
+do i=1,newcuantas
 
-  pro(i)=1.0
+  proA(i)=1.0
+  proB(i)=1.0
 
   do j=1,long
-    az = pz(i, j)         
-    pro(i) = pro(i) * xpot(az)
+    az = pzA(i, j)         
+    proA(i) = proA(i) * xpotA(az)
   enddo
-  q=q+pro(i)
+  qA=qA+proA(i)
   do j = 1,long
-    az = pz(i, j)
-    avpol(az) = avpol(az) + pro(i)*sigma*vsol*vpol/delta
+    az = pzA(i, j)
+    avpolA(az) = avpolA(az) + proA(i)*sigmaA*vsol*vpol/delta
+  enddo
+  do j=1,long
+    az = pzB(i, j)         
+    proB(i) = proB(i) * xpotB(az)
+  enddo
+  qB=qB+proB(i)
+  do j = 1,long
+    az = pzB(i, j)
+    avpolB(az) = avpolB(az) + proB(i)*sigmaB*vsol*vpol/delta
   enddo
 
 enddo ! i
 
 do iz=1, dimz            ! norm avpol
-    avpol(iz)=avpol(iz)/q
+    avpolA(iz)=avpolA(iz)/qA
 enddo
-
+do iz=1, dimz            ! norm avpol
+    avpolB(iz)=avpolB(iz)/qB
+enddo
 !         temp2 = 0.0
 !         do iz = 1, dimz
 !         temp2 = temp2 + avpol(iz)
@@ -117,13 +136,14 @@ enddo
 ! calculation of qtot (charge in units of |e|/vsol)
 
 do iz=1,dimz
- qtot(iz) = (zpos*xpos(iz)+zneg*xneg(iz))/vsalt + avpol(iz)*zpol/vpol*fdis(iz) + xHplus(iz)-xOHmin(iz) 
+ qtot(iz) = (zpos*xpos(iz)+zneg*xneg(iz))/vsalt + avpolA(iz)*zpolA/vpol*fdisA(iz)&
++ avpolB(iz)*zpolB/vpol*fdisB(iz) + xHplus(iz)-xOHmin(iz) 
 enddo
 
 ! first block of f,  packing constraint
 
 do iz=1,dimz
- f(iz)=avpol(iz) + xh(iz) + xneg(iz) + xpos(iz) + xHplus(iz) + xOHmin(iz) - 1.000000d0
+ f(iz)=avpolA(iz) + avpolB(iz) + xh(iz) + xneg(iz) + xpos(iz) + xHplus(iz) + xOHmin(iz) - 1.000000d0
 enddo
 
 ! second block of f, Poisson Equation
@@ -140,7 +160,7 @@ do i = 1, 2*ntot
 norma = norma +(f(i))**2    
 enddo
 
-print*, iter, norma, q
+print*, iter, norma, qA, qB
 ier = 0.0
    
 return

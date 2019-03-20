@@ -21,7 +21,7 @@ integer cc, ccc
 
 real*8 Free_energy, F_Mix_s, F_Mix_pos
 real*8 F_Mix_neg, F_Mix_Hplus
-real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupol, pilat
+real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupolA, mupolB, pilat
 real*8 F_Mix_OHmin, F_Conf, F_Eq, F_vdW, F_eps, F_electro
 integer i, iz, iiz
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
@@ -105,10 +105,13 @@ Free_Energy = Free_Energy + F_Mix_OHmin
 
 F_Conf = 0.0
 
-do i = 1, cuantas
-  F_Conf = F_Conf + (pro(i)/q)*dlog((pro(i))/q)*sigma
+do i = 1, newcuantas
+  F_Conf = F_Conf + (proA(i)/qA)*dlog((proA(i))/qA)*sigmaA
 enddo
 
+do i = 1, newcuantas
+  F_Conf = F_Conf + (proB(i)/qB)*dlog((proB(i))/qB)*sigmaB
+enddo
 Free_Energy = Free_Energy + F_Conf
 
 ! 7. Chemical Equilibrium
@@ -116,10 +119,16 @@ Free_Energy = Free_Energy + F_Conf
 F_Eq = 0.0 
 
 do iz  = 1, dimz
-  F_Eq = F_Eq + fdis(iz)*dlog(fdis(iz))*avpol(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdis(iz))*dlog(1.0-fdis(iz))*avpol(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdis(iz))*dlog(K0)*avpol(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdis(iz))*(-dlog(expmuHplus))*avpol(iz)/vpol
+  F_Eq = F_Eq + fdisA(iz)*dlog(fdisA(iz))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisA(iz))*dlog(1.0-fdisA(iz))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisA(iz))*dlog(K0A)*avpolA(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisA(iz))*(-dlog(expmuHplus))*avpolA(iz)/vpol
+enddo
+do iz  = 1, dimz
+  F_Eq = F_Eq + fdisB(iz)*dlog(fdisB(iz))*avpolB(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisB(iz))*dlog(1.0-fdisB(iz))*avpolB(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisB(iz))*dlog(K0B)*avpolB(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisB(iz))*(-dlog(expmuOHmin))*avpolB(iz)/vpol
 enddo
 
 F_eq = F_eq *delta/vsol
@@ -172,13 +181,14 @@ sumel = (delta/vsol)*sumel
 
 sum = sumpi + sumrho + sumel
 
-Free_Energy2 = -sigma*dlog(q) + sum -F_vdW 
+Free_Energy2 = -sigmaA*dlog(qA)-sigmaB*dlog(qB) + sum -F_vdW 
 
 ! Chemical potential chains
-mupol = -dlog(q)
+mupolA = -dlog(qA)
+mupolB = -dlog(qB)
  
 ! Pilat
-pilat = sigma*mupol - Free_energy
+pilat = sigmaA*mupolA+sigmaB*mupolB - Free_energy
 
 ! Save to disk
 
@@ -193,9 +203,9 @@ write(308,*)cc, ccc, F_Eq
 write(309,*)cc, ccc, F_vdW
 write(311,*)cc, ccc, F_electro
 write(312,*)cc, ccc, Free_energy2
-write(313,*)cc, ccc, mupol
+write(313,*)cc, ccc, mupolA
 write(314,*)cc, ccc, pilat
-
+write(315,*)cc, ccc, mupolB
 ! print
 
 print*, 'Free energy:', Free_energy, Free_energy2
