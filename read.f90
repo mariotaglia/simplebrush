@@ -58,7 +58,10 @@ read(8, *), basura
 read(8, *), pHbulk ! bulk pH
 
 read(8, *), basura
-read(8, *), st     ! polymerA-polymer attraction strenght in kBT
+read(8, *), st     ! polymer-polymer attraction strenght in kBT
+
+read(8, *), basura					!!!!!!!!!!!!!!!!!!!!!!!
+read(8, *), pKEo     ! Interation 	!!!!!!!!!!!!!!!!!!!!!!!
 
 read(8, *), basura
 read(8, *), Xulimit  ! cutoff for porr sv interaction in lattice sites

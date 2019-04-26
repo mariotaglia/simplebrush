@@ -43,12 +43,16 @@
 
       common /psize/ neq
 
-      do i = 1, neq/2
+      do i = 1, dimz
          pp(i) = 0.1 / (1.0+(1.0-udata(i))*exp(1.0-udata(i)))
       enddo
 
-      do i = neq/2+1, neq
+      do i = dimz+1, 2*dimz
          pp(i) = 1.0
+      enddo
+
+      do i = 2*dimz+1,3*dimz
+         pp(i) = 0.1 / (1.0+(1.0-udata(i))*exp(1.0-udata(i)))
       enddo
 
       ier = 0
@@ -69,15 +73,15 @@
       use system
       implicit none
 
-      real*8 x1(2*dimz), xg1(2*dimz)
+      real*8 x1(3*dimz), xg1(3*dimz)
 
       integer*8 iout(15) ! Kinsol additional output information
       real*8 rout(2) ! Kinsol additional out information
 
       integer*8 msbpre
       real*8 fnormtol, scsteptol
-      real*8 scale(2*dimz)
-      real*8 constr(2*dimz)
+      real*8 scale(3*dimz)
+      real*8 constr(3*dimz)
 
       integer*4  globalstrat, maxl, maxlrst
 
@@ -89,7 +93,7 @@
 
 ! INIT KINSOL
 
-      neq = 2*dimz
+      neq = 3*dimz
       msbpre  = 5 ! maximum number of iterations without prec. setup (?)
       fnormtol = 1.0d-8 ! Function-norm stopping tolerance
       scsteptol = 1.0d-8 ! Function-norm stopping tolerance
@@ -117,13 +121,15 @@
       call fkinsetrin('FNORM_TOL', fnormtol, ier)
       call fkinsetrin('SSTEP_TOL', scsteptol, ier)
 
-         do i = 1, neq  !constraint vector
-         constr(i) = 0.0
-         enddo
-         do i = 1, neq/2  !constraint vector
+         do i = 1, dimz  !constraint vector
          constr(i) = 2.0
          enddo
-
+         do i = dimz+1, 2*dimz  !constraint vector
+         constr(i) = 0.0
+         enddo
+         do i = 2*dimz+1, 3*dimz  !constraint vector
+         constr(i) = 1.0
+         enddo
 
 
          call fkinsetvin('CONSTR_VEC', constr, ier) ! constraint vector

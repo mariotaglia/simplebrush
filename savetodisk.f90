@@ -51,12 +51,20 @@ title = 'avOHm'
 call savetodisk(xOHmin, title, cc,ccc)
 
 ! fdisA
-title = 'fdisA'
-call savetodisk(fdisA, title, cc, ccc)
+title = 'fdisANC'
+call savetodisk(fdisANC, title, cc, ccc)
 
 ! fdisB
-title = 'fdisB'
-call savetodisk(fdisB, title, cc, ccc)
+title = 'fdisBNC'
+call savetodisk(fdisBNC, title, cc, ccc)
+
+! fdisAas
+title = 'fdisAas'
+call savetodisk(fdisAas, title, cc, ccc)
+
+! fdisBas
+title = 'fdisBas'
+call savetodisk(fdisBas, title, cc, ccc)
 
 ! Potencial electrostatico
 title = 'poten'
@@ -79,17 +87,19 @@ call savetodisk(psi, title, cc, ccc)
          write(510,*)'pKaA        = ',pKaA
          write(510,*)'pK0A         = ',-dlog(K0A)/dlog(10.0D0)
          write(510,*)'K0A          = ',K0A
-		 write(510,*)'pKaB         = ',pKaB
+			write(510,*)'pKEo         = ',pKEo	
+         write(510,*)'K0Eo          = ',K0Eo
+			write(510,*)'pKaB         = ',pKaB
          write(510,*)'pK0B         = ',-dlog(K0B)/dlog(10.0D0)
-         write(510,*)'K0B          = ',K0B
-		 write(510,*)'zpos        = ',zpos
+         write(510,*)'K0B          = ',K0B	 
+			write(510,*)'zpos        = ',zpos
          write(510,*)'zneg        = ',zneg
          write(510,*)'cuantas     = ',cuantas
          write(510,*)'newcuantas     = ',newcuantas
          write(510,*)'iterations  = ',iter
          write(510,*)'sigmaA       = ',sigmaA
          write(510,*)'sigmaB      = ',sigmaB
-		 write(510,*)'Version GIT	  = ',_VERSION
+			write(510,*)'Version GIT	  = ',_VERSION
 close(510)
 
 ! Saves solver vector

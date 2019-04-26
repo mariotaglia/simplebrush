@@ -7,7 +7,7 @@ implicit none
 
 integer n
 integer i
-real*8 x1(2*dimz),xg1(2*dimz)
+real*8 x1(3*dimz),xg1(3*dimz)
 integer ier
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -22,7 +22,7 @@ n = dimz ! size of system
 ! Set ups initial guess 
 
 if(infile.eq.2) then ! aleready solve one case, recover guess from xflag
-  do i = 1, 2*n 
+  do i = 1, 3*n 					!!G_
     xg1(i) = xflag(i)     
     x1(i) = xflag(i)
   enddo
@@ -38,11 +38,20 @@ if(infile.eq.0) then ! no initial guess provided, use bulk
      xg1(i)=0.0d0
      x1(i)=0.0d0
   enddo
+
+  do i=n+n+1, n*3				!!G_
+     xg1(i)=0.0
+     x1(i)=0.0
+  enddo
+
 endif
  
+
+
+
 if(infile.eq.1) then ! initial guess provided in file in.txt
   open(unit=45, file='in.txt')
-  do i=1, 2*n
+  do i=1, 3*n					!!G_
     read(45,*)xg1(i)
     x1(i) = xg1(i)
   enddo

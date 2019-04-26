@@ -6,6 +6,7 @@ real*8 sigmaB
 real*8 csalt
 real*8 pKaA
 real*8 pkaB
+real*8 pkEo
 real*8 pHbulk
 real*8 st
 endmodule
@@ -26,7 +27,15 @@ real*8 qA
 real*8, allocatable :: avpolB(:)
 real*8, allocatable :: fdisB(:)
 real*8 qB
-end module
+real*8, allocatable :: xna(:)
+real*8, allocatable :: xnb(:)
+real*8, allocatable :: eta(:)
+real*8, allocatable :: M(:)
+real*8, allocatable :: fdisANC(:)
+real*8, allocatable :: fdisBNC(:)
+real*8, allocatable :: fdisAas(:)
+real*8, allocatable :: fdisBas(:)
+endmodule
 
 module kai
 integer Xulimit ! cutoff for poor sv interaction in lattice sites
@@ -64,7 +73,7 @@ module molecules
 real*8 zpos, zneg, zpolA, zpolB ! charges of cation, anions and polyelectrolyte segment
 real*8 vsalt, vpol   ! volume of salt and polyelectrolyte segments in units of vsol
 real*8 vsol             ! solvent volume 
-real*8 K0A, K0B
+real*8 K0A, K0B , K0Eo!K0
 endmodule
 
 module bulk

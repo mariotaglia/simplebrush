@@ -13,6 +13,7 @@ use system
 implicit none
 real*8 KaA
 real*8 KaB
+real*8 KEo
 real*8 cHplus, cOHmin
 real*8 pOHbulk
 real*8 xsalt
@@ -28,12 +29,14 @@ vsalt=((4.0/3.0)*pi*(0.27)**3)/vsol  ! volume salt in units of vsol 0.27=radius 
 !vpol= 0.095/vsol!                     ! volume polymer segment in units of vsol 
 vpol= 0.095/vsol!                     ! volume polymer segment in units of vsol 
 
+
 constq=delta*delta*4.0*pi*lb/vsol   ! multiplicative factor in poisson eq  
 pKw = 14.0 ! -log10(Kw)
 kW=10**(-pKw)
 !Esta primer parte esta relacionada con el sistema sin el polimero por lo que quedaría igual
 KaA=10**(-pKaA)
 KaB=10**(-pKaB)
+KEo=dexp(-pKEo) !!!!!!!!!!!!!!!!!!!!!!!
 cHplus = 10**(-pHbulk)    ! concentration H+ in bulk
 xHplusbulk = (cHplus*Na/(1.0d24))*(vsol)  ! volume fraction H+ in bulk vH+=vsol
 pOHbulk= pKw -pHbulk
@@ -51,9 +54,11 @@ else                  ! pH >7
 endif
 
 xsolbulk=1.0 -xHplusbulk -xOHminbulk - xnegbulk -xposbulk 
-
+																		!KO
 K0A = (KaA*vsol/xsolbulk)*(Na/1.0d24)! intrinstic equilibruim constant 
 K0B = (Kw/KaB*vsol/xsolbulk)*(Na/1.0d24) 
+K0Eo = (KEo)*(1.0d24/Na) !!!!!!!!!!!!!!!!!!!!!!!
+
 expmupos = xposbulk /xsolbulk**vsalt
 expmuneg = xnegbulk /xsolbulk**vsalt
 expmuHplus = xHplusbulk /xsolbulk   ! vsol = vHplus 
