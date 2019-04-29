@@ -115,25 +115,25 @@ enddo
 Free_Energy = Free_Energy + F_Conf
 
 ! 7. Chemical Equilibrium
-
+															!!G_ cambie todo esto va a estar mal pero me crasheaba sino !!
 F_Eq = 0.0 
-
+	
 do iz  = 1, dimz
-  F_Eq = F_Eq + fdisA(iz)*dlog(fdisA(iz))*avpolA(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisA(iz))*dlog(1.0-fdisA(iz))*avpolA(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisA(iz))*dlog(K0A)*avpolA(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisA(iz))*(-dlog(expmuHplus))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisANC(iz)-fdisAas(iz))*dlog(1.0-fdisANC(iz)-fdisAas(iz))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (fdisANC(iz))*dlog(fdisANC(iz))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (fdisANC(iz))*dlog(K0A)*avpolA(iz)/vpol
+  F_Eq = F_Eq + (fdisANC(iz))*(-dlog(expmuHplus))*avpolA(iz)/vpol
 enddo
 do iz  = 1, dimz
-  F_Eq = F_Eq + fdisB(iz)*dlog(fdisB(iz))*avpolB(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisB(iz))*dlog(1.0-fdisB(iz))*avpolB(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisB(iz))*dlog(K0B)*avpolB(iz)/vpol
-  F_Eq = F_Eq + (1.0-fdisB(iz))*(-dlog(expmuOHmin))*avpolB(iz)/vpol
+  F_Eq = F_Eq + (1.0-fdisBNC(iz)-fdisBas(iz))*dlog(1.0-fdisBNC(iz)-fdisBas(iz))*avpolB(iz)/vpol
+  F_Eq = F_Eq + (fdisBNC(iz))*dlog(fdisBNC(iz))*avpolB(iz)/vpol
+  F_Eq = F_Eq + (fdisBNC(iz))*dlog(K0B)*avpolB(iz)/vpol
+  F_Eq = F_Eq + (fdisBNC(iz))*(-dlog(expmuOHmin))*avpolB(iz)/vpol
 enddo
 
 F_eq = F_eq *delta/vsol
 Free_Energy = Free_Energy + F_Eq
-
+															!!G_ cambie todo esto va a estar mal pero me crasheaba sino !!
 ! 8.vdW 
 
 F_vdW = 0.0

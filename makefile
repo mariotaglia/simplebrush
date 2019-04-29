@@ -9,7 +9,7 @@ $(info HOST is ${HOST})
 
 # some definitions
 SHELL = /bin/bash
-FFLAGS=-fbacktrace -fbounds-check #-O3 # 
+FFLAGS=-O3 # -fbacktrace -fbounds-check #
 
 ifeq ($(HOST),mdq)
 LFLAGS = -lm /usr/lib/x86_64-linux-gnu/librt.so  -L/usr/local/lib  -lsundials_fkinsol -lsundials_kinsol -lsundials_fnvecserial -lsundials_nvecserial ${LIBS} -Wl,-rpath,/usr/local/lib

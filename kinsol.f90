@@ -122,13 +122,13 @@
       call fkinsetrin('SSTEP_TOL', scsteptol, ier)
 
          do i = 1, dimz  !constraint vector
-         constr(i) = 2.0
+         constr(i) = 2.0	!mayor que cero
          enddo
          do i = dimz+1, 2*dimz  !constraint vector
-         constr(i) = 0.0
+         constr(i) = 0.0	! cualquier cosa
          enddo
          do i = 2*dimz+1, 3*dimz  !constraint vector
-         constr(i) = 1.0
+         constr(i) = 1.0	!mayor igual a cero
          enddo
 
 

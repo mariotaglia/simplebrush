@@ -60,14 +60,15 @@ do iz=1,dimz
    xHplus(iz) = expmuHplus*(xh(iz))*dexp(-psi2(iz))         ! H+ volume fraction
    xOHmin(iz) = expmuOHmin*(xh(iz))*dexp(+psi2(iz))         ! OH-  volume fraction
 	xnb(iz)=1.0-xna(iz)-xh(iz)-xpos(iz)-xneg(iz)-xHplus(iz)-xOHmin(iz)
-	if (0.0 .lt. xna(iz) .AND. 0.0 .lt. xnb(iz)) THEN	!esto no deberia pasar por la definicion 		!g 
+   fdisAas(iz)=0.0d0
+	fdisBas(iz)=0.0d0
+	if ((0.0 .lt. xna(iz)).AND.(0.0 .lt. xnb(iz))) THEN		!g 
 		eta(iz)=xna(iz)/xnb(iz)
-   	M(iz)=(1.0+(xOHmin(iz))/(K0B*xh(iz)))*(1+(xHplus(iz))/(K0A*xh(iz)))/(K0Eo*vpol*xna(iz)) 							   !!gabi: vpair = vpol!!
+   	M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz)) )*( 1.0+ (xHplus(iz))/(K0A*xh(iz)) )/(K0Eo*vpol*xna(iz)) 							   !!gabi: vpair = vpol!!
    	fdisAas(iz) = -(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	1.0+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	fdisBas(iz) = -(1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	1.0+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
-	else 
-	   fdisAas(iz)=0.0
-		fdisBas(iz)=0.0
+		!fdisAas(iz) =0.0
+		!fdisBas(iz) =0.0
 	endif
 	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
    fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g

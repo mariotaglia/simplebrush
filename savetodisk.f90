@@ -51,19 +51,19 @@ title = 'avOHm'
 call savetodisk(xOHmin, title, cc,ccc)
 
 ! fdisA
-title = 'fdisANC'
+title = 'fdANC'
 call savetodisk(fdisANC, title, cc, ccc)
 
 ! fdisB
-title = 'fdisBNC'
+title = 'fdBNC'
 call savetodisk(fdisBNC, title, cc, ccc)
 
 ! fdisAas
-title = 'fdisAas'
+title = 'fdAas'
 call savetodisk(fdisAas, title, cc, ccc)
 
 ! fdisBas
-title = 'fdisBas'
+title = 'fdBas'
 call savetodisk(fdisBas, title, cc, ccc)
 
 ! Potencial electrostatico
