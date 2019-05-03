@@ -36,7 +36,7 @@ kW=10**(-pKw)
 !Esta primer parte esta relacionada con el sistema sin el polimero por lo que quedaría igual
 KaA=10**(-pKaA)
 KaB=10**(-pKaB)
-KEo=dexp(-pKEo) !!!!!!!!!!!!!!!!!!!!!!!
+KEo=10**(-pKEo) !!!!!!!!!!!!!!!!!!!!!!!
 cHplus = 10**(-pHbulk)    ! concentration H+ in bulk
 xHplusbulk = (cHplus*Na/(1.0d24))*(vsol)  ! volume fraction H+ in bulk vH+=vsol
 pOHbulk= pKw -pHbulk
@@ -82,5 +82,6 @@ open(unit=312, file='F_tot2.dat')
 open(unit=313, file='mupolA.dat')
 open(unit=314, file='pilat.dat')
 open(unit=315, file='mupolB.dat')
+open(unit=316, file='mfdis.dat')
 
 end subroutine

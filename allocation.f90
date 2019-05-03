@@ -31,7 +31,10 @@ allocate(avpolB(dimz)) !
 allocate(xna(dimz))
 allocate(xnb(dimz))
 allocate(eta(dimz))
-allocate(m(dimz))	
+allocate(m(dimz))
+allocate(KK0check(dimz))
+allocate(KKaAcheckplus(dimz))
+allocate(KKaBcheckmin(dimz))
 allocate(fdisANC(dimz)) !	fraction not charge pol-A
 allocate(fdisBNC(dimz)) !	fraction not charge pol-B
 allocate(fdisAas(dimz)) !	fraction associate pol-A

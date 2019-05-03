@@ -66,6 +66,10 @@ call savetodisk(fdisAas, title, cc, ccc)
 title = 'fdBas'
 call savetodisk(fdisBas, title, cc, ccc)
 
+! mfdisAas
+title = 'mfdis'
+call savetodisk(M, title, cc, ccc)
+
 ! Potencial electrostatico
 title = 'poten'
 call savetodisk(psi, title, cc, ccc)
@@ -106,7 +110,7 @@ close(510)
            
 write(filename,'(A6, I3.3, A4)')'out.', ccc, '.dat'
 open(unit=45, file=filename)
-do i = 1, 2*n
+do i = 1, 3*n
   write(45, *)xflag(i)
 enddo
 close(45)

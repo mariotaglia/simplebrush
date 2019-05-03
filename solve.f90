@@ -40,8 +40,8 @@ if(infile.eq.0) then ! no initial guess provided, use bulk
   enddo
 
   do i=n+n+1, n*3				!!G_
-     xg1(i)=0.001
-     x1(i)=0.001
+     xg1(i)=0.0001
+     x1(i)=0.0001
   enddo
 
 endif
