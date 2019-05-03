@@ -33,12 +33,17 @@ allocate(xnb(dimz))
 allocate(eta(dimz))
 allocate(m(dimz))
 allocate(KK0check(dimz))
+allocate(KK0checkp(dimz))
 allocate(KKaAcheckplus(dimz))
 allocate(KKaBcheckmin(dimz))
 allocate(fdisANC(dimz)) !	fraction not charge pol-A
 allocate(fdisBNC(dimz)) !	fraction not charge pol-B
 allocate(fdisAas(dimz)) !	fraction associate pol-A
-allocate(fdisBas(dimz)) !	fraction associate pol-B
+allocate(fdisBas(dimz)) 
+allocate(fdisANCp(dimz)) !	fraction not charge pol-A
+allocate(fdisBNCp(dimz)) !	fraction not charge pol-B
+allocate(fdisAasp(dimz)) !	fraction associate pol-A
+allocate(fdisBasp(dimz))!	fraction associate pol-B
 allocate(pzA(cuantas,long)) !This will be related with the position of the segment, of the polyms, so it be different for each one. 
 allocate(pzB(cuantas,long)) !
 allocate(pp(3*dimz))

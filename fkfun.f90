@@ -65,18 +65,28 @@ do iz=1,dimz
 	if ((0.0 .lt. xna(iz)).AND.(0.0 .lt. xnb(iz))) THEN		!g 
 		eta(iz)=xna(iz)/xnb(iz)
 		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz)) )*( 1.0+ (xHplus(iz))/(K0A*xh(iz)) )/(K0Eo*vpol*xna(iz)) 							   !!gabi: vpair = vpol!!
- 	 	fdisAas(iz) = -(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
-   	fdisBas(iz) = -(1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
+ 	 	fdisAas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))-(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
+   	fdisBas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)-eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
+ 	 	
+		!fdisAasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
+   	!fdisBasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
+
 		!print*, 'fdisAas(iz) y fdisBas(iz):', fdisAas(iz), fdisBas(iz)
 		!fdisAas(iz) =0.0
 		!fdisBas(iz) =0.0
 	endif
 	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
    fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
+
+				!fdisANCp(iz) = (1.0-fdisAasp(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
+   			!fdisBNCp(iz) = (1.0-fdisBasp(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
+
   	KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))*vpol*xna(iz) )	)-pKeo
-	KKaAcheckplus(iz)= -dlog10( (xHplus(iz)/xh(iz))*((1-fdisANC(iz)-fdisAas(iz))/fdisANC(iz))*(xsolbulk*1.0d24/(Na*vsol)))-pKaA !! esto era para chequear pkaA
-	kkaBcheckmin(iz)=	 (xOhmin(iz)/xh(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))/fdisBNC(iz)-K0B
-	print*, 'KKcheck,fdisAas,fdisBas:', KK0check(iz),	KKaAcheckplus(iz),kkaBcheckmin(iz), fdisAas(iz),fdisBas(iz)
+ 			! 	KK0checkp(iz)=-dlog10((Na/1.0d24)*fdisBasp(iz)/((1.0-fdisAasp(iz)-fdisANCp(iz))*(1.0-fdisBasp(iz)-fdisBNCp(iz))*vpol*xna(iz)))&
+			!-pKeo
+			!KKaAcheckplus(iz)= -dlog10( (xHplus(iz)/xh(iz))*((1-fdisANC(iz)-fdisAas(iz))/fdisANC(iz))*(xsolbulk*1.0d24/(Na*vsol)))-pKaA !! esto era para chequear pkaA
+			!kkaBcheckmin(iz)=	 (xOhmin(iz)/xh(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))/fdisBNC(iz)-K0B
+	print*, 'KKcheck,fdisAas,fdisAasp:', KK0check(iz), fdisAas(iz),fdisANC(iz) !KKaAcheckplus(iz),kkaBcheckmin(iz)
 enddo
 
 ! Calculation of xtotal (KaA*vsol/xsolbulk)*(Na/1.0d24)!
@@ -174,7 +184,7 @@ enddo
 ! third block of f, ASSOCIATE RELATION
  
 do iz=1,dimz
-	f(iz+ntot+ntot)=avpolA(iz)-xna(iz) !		!
+	f(iz+ntot+ntot)=avpolA(iz)-xna(iz) !	
 enddo
 
 iter = iter + 1

@@ -31,10 +31,18 @@ real*8, allocatable :: xna(:)
 real*8, allocatable :: xnb(:)
 real*8, allocatable :: eta(:)
 real*8, allocatable :: M(:)
+real*8, allocatable :: KK0check(:)
+real*8, allocatable :: KK0checkp(:)
+real*8, allocatable :: KKaAcheckplus(:)
+real*8, allocatable :: kkaBcheckmin(:)
 real*8, allocatable :: fdisANC(:)
 real*8, allocatable :: fdisBNC(:)
 real*8, allocatable :: fdisAas(:)
 real*8, allocatable :: fdisBas(:)
+real*8, allocatable :: fdisANCp(:)
+real*8, allocatable :: fdisBNCp(:)
+real*8, allocatable :: fdisAasp(:)
+real*8, allocatable :: fdisBasp(:)
 endmodule
 
 module kai
