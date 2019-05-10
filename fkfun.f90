@@ -71,9 +71,6 @@ do iz=1,dimz
 		!fdisAasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	!fdisBasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
 
-		!print*, 'fdisAas(iz) y fdisBas(iz):', fdisAas(iz), fdisBas(iz)
-		!fdisAas(iz) =0.0
-		!fdisBas(iz) =0.0
 	endif
 	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
    fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
@@ -81,12 +78,12 @@ do iz=1,dimz
 				!fdisANCp(iz) = (1.0-fdisAasp(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
    			!fdisBNCp(iz) = (1.0-fdisBasp(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
 
-  	KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))*vpol*xna(iz) )	)-pKeo
+  			!KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))*vpol*xna(iz) )	)-pKeo
  			! 	KK0checkp(iz)=-dlog10((Na/1.0d24)*fdisBasp(iz)/((1.0-fdisAasp(iz)-fdisANCp(iz))*(1.0-fdisBasp(iz)-fdisBNCp(iz))*vpol*xna(iz)))&
 			!-pKeo
 			!KKaAcheckplus(iz)= -dlog10( (xHplus(iz)/xh(iz))*((1-fdisANC(iz)-fdisAas(iz))/fdisANC(iz))*(xsolbulk*1.0d24/(Na*vsol)))-pKaA !! esto era para chequear pkaA
 			!kkaBcheckmin(iz)=	 (xOhmin(iz)/xh(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))/fdisBNC(iz)-K0B
-	print*, 'KKcheck,fdisAas,fdisAasp:', KK0check(iz), fdisAas(iz),fdisANC(iz) !KKaAcheckplus(iz),kkaBcheckmin(iz)
+	!print*, 'fdisAas,fdisAasp:', fdisAas(iz),fdisANC(iz) !KKaAcheckplus(iz),kkaBcheckmin(iz)
 enddo
 
 ! Calculation of xtotal (KaA*vsol/xsolbulk)*(Na/1.0d24)!
@@ -101,8 +98,10 @@ xtotal(-Xulimit:0) = 0.0 ! xtotal in surface = 0.0
 ! Calculation of xpot; es la suma de P 
 
 do iz = 1, dimz
-  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)) 
-  xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz))
+!  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)) 
+ ! xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz))
+	xpotA(iz) = xh(iz)**vpol/(fdisANC(iz)) 
+   xpotB(iz) = xh(iz)**vpol/(fdisBNC(iz))
 
   do iiZ = -Xulimit, Xulimit
     xpotA(iz) = xpotA(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))
@@ -110,6 +109,7 @@ do iz = 1, dimz
 
   enddo
 enddo
+
 
 ! Calculation of pro
 
@@ -184,7 +184,7 @@ enddo
 ! third block of f, ASSOCIATE RELATION
  
 do iz=1,dimz
-	f(iz+ntot+ntot)=avpolA(iz)-xna(iz) !	
+	f(iz+ntot+ntot)=xna(iz)-avpolA(iz) !	
 enddo
 
 iter = iter + 1
