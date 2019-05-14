@@ -60,14 +60,14 @@ do iz=1,dimz
    xHplus(iz) = expmuHplus*(xh(iz))*dexp(-psi2(iz))         ! H+ volume fraction
    xOHmin(iz) = expmuOHmin*(xh(iz))*dexp(+psi2(iz))         ! OH-  volume fraction
 	xnb(iz)=1.0-xna(iz)-xh(iz)-xpos(iz)-xneg(iz)-xHplus(iz)-xOHmin(iz)
-   fdisAas(iz)=0.0d0
+	fdisAas(iz)=0.0d0
 	fdisBas(iz)=0.0d0
-	if ((0.0 .lt. xna(iz)).AND.(0.0 .lt. xnb(iz))) THEN		!g 
+	if ((1.0d-6 .lt. xna(iz)).AND.(1.0d-6 .lt. xnb(iz))) THEN		!g 
 		eta(iz)=xna(iz)/xnb(iz)
-		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz)) )*( 1.0+ (xHplus(iz))/(K0A*xh(iz)) )/(K0Eo*vpol*xna(iz)) 							   !!gabi: vpair = vpol!!
+		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz)) )*( 1.0+ (xHplus(iz))/(K0A*xh(iz)) )/(K0Eo*xna(iz)) 							   !!gabi: vpair = vpol!!
  	 	fdisAas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))-(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	fdisBas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)-eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
- 	 	
+! 		print*, 'fdisAas,fdisBas:', fdisAas(iz),fdisBas(iz) 
 		!fdisAasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	!fdisBasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
 
@@ -98,10 +98,10 @@ xtotal(-Xulimit:0) = 0.0 ! xtotal in surface = 0.0
 ! Calculation of xpot; es la suma de P 
 
 do iz = 1, dimz
-!  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)) 
- ! xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz))
-	xpotA(iz) = xh(iz)**vpol/(fdisANC(iz)) 
-   xpotB(iz) = xh(iz)**vpol/(fdisBNC(iz))
+  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)) 
+  xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz))
+	!xpotA(iz) = xh(iz)**vpol/(fdisANC(iz)) 
+   !xpotB(iz) = xh(iz)**vpol/(fdisBNC(iz))
 
   do iiZ = -Xulimit, Xulimit
     xpotA(iz) = xpotA(iZ)*dexp(xtotal(iz+iiz)*Xu(iiZ)*st/(vpol*vsol))

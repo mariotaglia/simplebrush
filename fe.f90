@@ -21,7 +21,7 @@ integer cc, ccc
 
 real*8 Free_energy, F_Mix_s, F_Mix_pos
 real*8 F_Mix_neg, F_Mix_Hplus
-real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupolA, mupolB, pilat, sumas,diffener
+real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupolA, mupolB, pilat, sumas,diffener,sumex
 real*8 F_Mix_OHmin, F_Conf, F_Eq, F_vdW, F_eps, F_electro
 integer i, iz, iiz
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
@@ -124,12 +124,12 @@ do iz  = 1, dimz
 
   F_Eq = F_Eq + (fdisANC(iz))*dlog(K0A)*avpolA(iz)/vpol
   F_Eq = F_Eq + (fdisANC(iz))*(-dlog(expmuHplus))*avpolA(iz)/vpol
-  F_Eq = F_Eq + (fdisAas(iz))*(dlog(1.0/K0Eo))*avpolA(iz)/vpol
+  F_Eq = F_Eq + (fdisAas(iz))*(-dlog(K0Eo))*avpolA(iz)/vpol
   
 	if (0.0 < fdisAas(iz)) then 
  	 F_Eq = F_Eq + (fdisAas(iz))*dlog(fdisAas(iz))*avpolA(iz)/vpol
  		if (0.0 < avpolA(iz))then 
-  			F_Eq = F_Eq + (-fdisAas(iz))*(dlog(avpolA(iz)*fdisAas(iz))*avpolA(iz)/vpol -1.0*avpolA(iz)/vpol)! usando que Vpol =Vab
+  			F_Eq = F_Eq + (-fdisAas(iz))*(dlog(avpolA(iz)*fdisAas(iz))-1.0)*avpolA(iz)/vpol ! usando que Vpol =Vab
 		endif
 	endif
 
@@ -188,7 +188,8 @@ do i=1,dimz
    sumrho = sumrho + ( - xh(i) -xHplus(i) -xOHmin(i)-(xpos(i)+xneg(i))/vsalt)! sum over  rho_i i=+,-,si
    sumrho = sumrho - ( - xsolbulk -xHplusbulk -xOHminbulk-(xposbulk+xnegbulk)/vsalt)! sum over  rho_i i=+,-,si
    sumel = sumel - qtot(i)*psi(i)/2.0 ! electrostatic part free energy	
-	sumas =sumas+ avpolB(i)* fdisBas(i)*( dlog(1.0-fdisBNC(i)-fdisBas(i))+1.0-dlog(expmuOHmin))
+	sumas = sumas +  avpolA(i)*fdisAas(i)/vpol
+
 
 enddo         
         
@@ -196,6 +197,7 @@ sumpi = (delta/vsol)*sumpi
 sumrho = (delta/vsol)*sumrho
 sumel = (delta/vsol)*sumel
 sumas = (delta/vsol)*sumas
+
 sum = sumpi + sumrho + sumel +sumas
 
 Free_Energy2 = -sigmaA*dlog(qA)-sigmaB*dlog(qB) + sum -F_vdW 
