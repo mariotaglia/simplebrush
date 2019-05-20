@@ -108,7 +108,7 @@ close(510)
 
 ! Saves solver vector
            
-write(filename,'(A6, I3.3, A4)')'out.', ccc, '.dat'
+write(filename,'(A6, I3.3, A4)')'outin.', ccc, '.dat'
 open(unit=45, file=filename)
 do i = 1, 3*n
   write(45, *)xflag(i)

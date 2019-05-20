@@ -1,14 +1,15 @@
 
-salt="1"
+salt="1 0.5 0.1 0.05 0.01 0.005 0.001 0.0001"
 long="25"
 pkaA="7"
 pkaB="7"
+pKEo="-1.1"
 
-for j in $long ; do
+for j in $pKEo ; do
 echo $j
 
-mkdir long_4_b_$j
-cd long_4_b_$j
+mkdir long_13_c_$j
+cd long_13_c_$j
 
 for pA in $pkaA ; do
 echo $pA
@@ -28,21 +29,23 @@ echo $i
 mkdir salt_$i
 cd salt_$i
 
-for z in {5..40} ; do
-echo $z
+for z in {1..40} ; do
+echo $(( 48-$z))
 
-mkdir dimz_$z
-cd dimz_$z
+mkdir dimz_$(( 48-$z))
+cd dimz_$(( 48-$z))
+
+
 
 echo "
 # dimz #
-$z
+$(( 48-$z))
 # delta #
 0.5
 # cuantas #
-500000
+400000
 # long #
-$j
+25
 # lseg @
 0.5
 # sigmaA #
@@ -60,7 +63,7 @@ $pB
 # st #
 0.0
 #pKEo#
-0
+$j
 # Xulimit #
 1
 # infile #

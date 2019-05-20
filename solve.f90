@@ -50,7 +50,7 @@ endif
 
 
 if(infile.eq.1) then ! initial guess provided in file in.txt
-  open(unit=45, file='in.txt')
+  open(unit=45, status="old",file="in.txt")
   do i=1, 3*n					!!G_
     read(45,*)xg1(i)
     x1(i) = xg1(i)
