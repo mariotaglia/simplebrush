@@ -95,8 +95,8 @@
 
       neq = 3*dimz
       msbpre  = 5 ! maximum number of iterations without prec. setup (?)
-      fnormtol = 1.0d-8 ! Function-norm stopping tolerance
-      scsteptol = 1.0d-8 ! Function-norm stopping tolerance
+      fnormtol = 1.0d-5 ! Function-norm stopping tolerance
+      scsteptol = 1.0d-5 ! Function-norm stopping tolerance
 
       maxl = 500 ! maximum Krylov subspace dimesion
       maxlrst = 2 ! maximum number of restarts

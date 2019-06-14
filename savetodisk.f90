@@ -54,6 +54,10 @@ call savetodisk(xOHmin, title, cc,ccc)
 title = 'fdANC'
 call savetodisk(fdisANC, title, cc, ccc)
 
+! fdisA
+title = 'fdANa'
+call savetodisk(fdisANa, title, cc, ccc)
+
 ! fdisB
 title = 'fdBNC'
 call savetodisk(fdisBNC, title, cc, ccc)
@@ -65,6 +69,10 @@ call savetodisk(fdisAas, title, cc, ccc)
 ! fdisBas
 title = 'fdBas'
 call savetodisk(fdisBas, title, cc, ccc)
+
+! fdisA
+title = 'fdBCl'
+call savetodisk(fdisBCl, title, cc, ccc)
 
 ! mfdisAas
 title = 'mfdis'

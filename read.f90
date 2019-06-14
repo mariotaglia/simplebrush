@@ -52,7 +52,13 @@ read(8, *), basura
 read(8, *), pKaA    ! pKaA of weak polyacid segments
 
 read(8, *), basura
+read(8, *), pKaANa    ! pKaA of weak polyacid segments
+
+read(8, *), basura
 read(8, *), pKaB    ! pKaB of weak polyacid segments
+
+read(8, *), basura
+read(8, *), pKaBCl    ! pKaB of weak polyacid segments
 
 read(8, *), basura
 read(8, *), pHbulk ! bulk pH

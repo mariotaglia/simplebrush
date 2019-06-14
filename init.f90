@@ -13,6 +13,8 @@ use system
 implicit none
 real*8 KaA
 real*8 KaB
+real*8 KaANa
+real*8 KaBCl
 real*8 KEo
 real*8 cHplus, cOHmin
 real*8 pOHbulk
@@ -37,6 +39,10 @@ kW=10**(-pKw)
 KaA=10**(-pKaA)
 KaB=10**(-pKaB)
 KEo=10**(-pKEo) !!!!!!!!!!!!!!!!!!!!!!!
+KaANa=10**(-pKaANa)
+KaBCl=10**(-pKaBCl)
+
+
 cHplus = 10**(-pHbulk)    ! concentration H+ in bulk
 xHplusbulk = (cHplus*Na/(1.0d24))*(vsol)  ! volume fraction H+ in bulk vH+=vsol
 pOHbulk= pKw -pHbulk
@@ -56,8 +62,13 @@ endif
 xsolbulk=1.0 -xHplusbulk -xOHminbulk - xnegbulk -xposbulk 
 																		!KO
 K0A = (KaA*vsol/xsolbulk)*(Na/1.0d24)! intrinstic equilibruim constant 
+K0ANa = (KaANa*vsol/xsolbulk)*(Na/1.0d24)! intrinstic equilibruim constant 
+K0BCl = (KaBCl*vsol/xsolbulk)*(Na/1.0d24)! intrinstic equilibruim constant 
 K0B = (Kw/KaB*vsol/xsolbulk)*(Na/1.0d24) 
 K0Eo = (KEo)*(1.0d24/Na) !!!!!!!!!!!!!!!!!!!!!!!
+
+print*, 'K:', K0A, K0Eo,K0B
+
 
 expmupos = xposbulk /xsolbulk**vsalt
 expmuneg = xnegbulk /xsolbulk**vsalt

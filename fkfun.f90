@@ -26,7 +26,7 @@ real*8 protemp, protemp1
 integer i,j, k, ix, iy, iz, ii, ax, ay, az, temp, iiZ
 real*8 temp2
 real*8 vpair
-real*8 xpotA(dimz)
+real*8 xpotA(dimz),fdisbc,fdisAC
 real*8 xpotB(dimz)
 real*8 psi2(0:dimz+1) ! psi plus boundaries at z=0 and dimz+1
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
@@ -62,28 +62,34 @@ do iz=1,dimz
 	xnb(iz)=1.0-xna(iz)-xh(iz)-xpos(iz)-xneg(iz)-xHplus(iz)-xOHmin(iz)
 	fdisAas(iz)=0.0d0
 	fdisBas(iz)=0.0d0
-	if ((1.0d-6 .lt. xna(iz)).AND.(1.0d-6 .lt. xnb(iz))) THEN		!g 
+	
+if ((1.0d-6 .lt. xna(iz)).AND.(1.0d-6 .lt. xnb(iz))) THEN		!g 
 		eta(iz)=xna(iz)/xnb(iz)
-		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz)) )*( 1.0+ (xHplus(iz))/(K0A*xh(iz)) )/(K0Eo*xna(iz)) 							   !!gabi: vpair = vpol!!
+		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz))+(K0BCl*xneg(iz)/(xh(iz)**vsalt)) )*( 1.0&
++ (xHplus(iz))/(K0A*xh(iz)) +(K0ANa*xpos(iz)/(xh(iz)**vsalt)))/(K0Eo*xna(iz)) 							   !!gabi: vpair = vpol!!
  	 	fdisAas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))-(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	fdisBas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)-eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
-! 		print*, 'fdisAas,fdisBas:', fdisAas(iz),fdisBas(iz) 
-		!fdisAasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))+(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
-   	!fdisBasp(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)+eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
-
+	
 	endif
-	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
-   fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
+	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz))&
+ + (K0ANa*K0A*xpos(iz)* (xh(iz)**(1.0-vsalt)))/(xHplus(iz)) )						   !g
+   fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz))&
+ + (K0BCl*K0B*xneg(iz)* (xh(iz)**(1.0-vsalt)))/(xOHmin(iz)) )						   !g
+	fdisANa(iz) = (fdisANC(iz))*(K0A*K0ANa*xpos(iz)* (xh(iz)**(1.0-vsalt) ))/xHplus(iz)
+	fdisBCl(iz) = (fdisBNC(iz))*(K0B*K0BCl*xneg(iz)* (xh(iz)**(1.0-vsalt) ))/xOHmin(iz)
 
-				!fdisANCp(iz) = (1.0-fdisAasp(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz)))						   !g
-   			!fdisBNCp(iz) = (1.0-fdisBasp(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz)))						   !g
+  			!KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANa(iz)&
+!-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz)-fdisBCl(iz))*xna(iz) )	)/pKeo
+		!	KKaAcheckplus(iz)= -dlog10( (xHplus(iz)/xh(iz))*((1-fdisANC(iz)-fdisANa(iz)&
+!-fdisAas(iz))/fdisANC(iz))*(xsolbulk*1.0d24/(Na*vsol)))-pKaA !! esto era para chequear pkaA
+		!	kkaBcheckmin(iz)=	 (xOhmin(iz)/xh(iz))*(1.0-fdisBas(iz)-fdisBCl(iz)-fdisBNC(iz))/fdisBNC(iz)-K0B
+		!	KKaANa(iz)= dlog10( (xh(iz)/xpos(iz))*(fdisANa(iz)/(1-fdisANC(iz)-fdisANa(iz)&
+!-fdisAas(iz)))*(xsolbulk*1.0d24/(Na*vsol)))/pKaAna !! esto era para chequear pkaA
+		!	KKaBCl(iz)= dlog10( (xh(iz)/xneg(iz))/((1-fdisBNC(iz)-fdisBCl(iz)&
+!-fdisBas(iz))/fdisBCl(iz))*(xsolbulk*1.0d24/(Na*vsol)))/pkaBCl !! esto era para chequear pkaA
 
-  			!KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))*vpol*xna(iz) )	)-pKeo
- 			! 	KK0checkp(iz)=-dlog10((Na/1.0d24)*fdisBasp(iz)/((1.0-fdisAasp(iz)-fdisANCp(iz))*(1.0-fdisBasp(iz)-fdisBNCp(iz))*vpol*xna(iz)))&
-			!-pKeo
-			!KKaAcheckplus(iz)= -dlog10( (xHplus(iz)/xh(iz))*((1-fdisANC(iz)-fdisAas(iz))/fdisANC(iz))*(xsolbulk*1.0d24/(Na*vsol)))-pKaA !! esto era para chequear pkaA
-			!kkaBcheckmin(iz)=	 (xOhmin(iz)/xh(iz))*(1.0-fdisBas(iz)-fdisBNC(iz))/fdisBNC(iz)-K0B
-	!print*, 'fdisAas,fdisAasp:', fdisAas(iz),fdisANC(iz) !KKaAcheckplus(iz),kkaBcheckmin(iz)
+
+!	print*, 'fdisAas,fdisAasp:', KK0check(iz),fdisBas(iz)
 enddo
 
 ! Calculation of xtotal (KaA*vsol/xsolbulk)*(Na/1.0d24)!
@@ -98,8 +104,8 @@ xtotal(-Xulimit:0) = 0.0 ! xtotal in surface = 0.0
 ! Calculation of xpot; es la suma de P 
 
 do iz = 1, dimz
-  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)) 
-  xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz))
+  xpotA(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolA)/(1.0-fdisAas(iz)-fdisANC(iz)-fdisANa(iz)) 
+  xpotB(iz) = xh(iz)**vpol*dexp(-psi2(iz)*zpolB)/(1.0-fdisBas(iz)-fdisBNC(iz)-fdisBCl(iz))
 	!xpotA(iz) = xh(iz)**vpol/(fdisANC(iz)) 
    !xpotB(iz) = xh(iz)**vpol/(fdisBNC(iz))
 
@@ -127,6 +133,7 @@ do i=1,newcuantas
     az = pzA(i, j)         
     proA(i) = proA(i) * xpotA(az)
   enddo
+
   qA=qA+proA(i)
   do j = 1,long
     az = pzA(i, j)
@@ -164,8 +171,8 @@ enddo
 ! calculation of qtot (charge in units of |e|/vsol)
 
 do iz=1,dimz
- qtot(iz) = (zpos*xpos(iz)+zneg*xneg(iz))/vsalt + avpolA(iz)*zpolA/vpol*(1.0-fdisANC(iz)-fdisAas(iz))&
-+ avpolB(iz)*zpolB/vpol*(1.0-fdisBNC(iz)-fdisBas(iz)) + xHplus(iz)-xOHmin(iz) 
+ qtot(iz) = (zpos*xpos(iz)+zneg*xneg(iz))/vsalt + avpolA(iz)*zpolA/vpol*(1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))&
++ avpolB(iz)*zpolB/vpol*(1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz)) + xHplus(iz)-xOHmin(iz) 
 enddo
 
 ! first block of f,  packing constraint

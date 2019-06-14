@@ -6,6 +6,8 @@ real*8 sigmaB
 real*8 csalt
 real*8 pKaA
 real*8 pkaB
+real*8 pKaANa
+real*8 pkaBCl
 real*8 pkEo
 real*8 pHbulk
 real*8 st
@@ -33,14 +35,16 @@ real*8, allocatable :: eta(:)
 real*8, allocatable :: M(:)
 real*8, allocatable :: KK0check(:)
 real*8, allocatable :: KK0checkp(:)
+real*8, allocatable :: KKaAna(:)
+real*8, allocatable :: KKaBCl(:)
 real*8, allocatable :: KKaAcheckplus(:)
 real*8, allocatable :: kkaBcheckmin(:)
 real*8, allocatable :: fdisANC(:)
 real*8, allocatable :: fdisBNC(:)
 real*8, allocatable :: fdisAas(:)
 real*8, allocatable :: fdisBas(:)
-real*8, allocatable :: fdisANCp(:)
-real*8, allocatable :: fdisBNCp(:)
+real*8, allocatable :: fdisANa(:)
+real*8, allocatable :: fdisBCl(:)
 real*8, allocatable :: fdisAasp(:)
 real*8, allocatable :: fdisBasp(:)
 endmodule
@@ -81,7 +85,7 @@ module molecules
 real*8 zpos, zneg, zpolA, zpolB ! charges of cation, anions and polyelectrolyte segment
 real*8 vsalt, vpol   ! volume of salt and polyelectrolyte segments in units of vsol
 real*8 vsol             ! solvent volume 
-real*8 K0A, K0B , K0Eo!K0
+real*8 K0A, K0B ,K0ANa,K0BCl, K0Eo!K0
 endmodule
 
 module bulk
