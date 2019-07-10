@@ -119,7 +119,9 @@ Free_Energy = Free_Energy + F_Conf
 F_Eq = 0.0 
 	
 do iz  = 1, dimz
-  F_Eq = F_Eq + (1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))*dlog(1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))*avpolA(iz)/vpol
+ if (1.0d-10 < (1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))) then 
+  F_Eq = F_Eq + (1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))*dlog(1.0-fdisANC(iz)-fdisAas(iz)-fdisANa(iz))*avpolA(iz)/vpol 
+ endif
   F_Eq = F_Eq + (fdisANC(iz))*dlog(fdisANC(iz))*avpolA(iz)/vpol
   F_Eq = F_Eq + (fdisANa(iz))*dlog(fdisANa(iz))*avpolA(iz)/vpol
 
@@ -139,8 +141,9 @@ do iz  = 1, dimz
 
 enddo
 do iz  = 1, dimz
-  F_Eq = F_Eq + (1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz))*dlog(1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz))*avpolB(iz)/vpol
-
+  if (1.0d-10 < (1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz))) then
+    F_Eq = F_Eq + (1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz))*dlog(1.0-fdisBNC(iz)-fdisBas(iz)-fdisBCl(iz))*avpolB(iz)/vpol
+  endif
 
   F_Eq = F_Eq + (fdisBNC(iz))*dlog(fdisBNC(iz))*avpolB(iz)/vpol
   F_Eq = F_Eq + (fdisBCl(iz))*dlog(fdisBCl(iz))*avpolB(iz)/vpol

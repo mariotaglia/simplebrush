@@ -65,18 +65,18 @@ do iz=1,dimz
 	
 if ((1.0d-6 .lt. xna(iz)).AND.(1.0d-6 .lt. xnb(iz))) THEN		!g 
 		eta(iz)=xna(iz)/xnb(iz)
-		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz))+(K0BCl*xneg(iz)/(xh(iz)**vsalt)) )*( 1.0&
-+ (xHplus(iz))/(K0A*xh(iz)) +(K0ANa*xpos(iz)/(xh(iz)**vsalt)))/(K0Eo*xna(iz)) 							   !!gabi: vpair = vpol!!
+		M(iz)=( 1.0+ (xOHmin(iz))/(K0B*xh(iz))+(xneg(iz)/(K0BCl*xh(iz)**vsalt)) )*( 1.0&
++ (xHplus(iz))/(K0A*xh(iz)) +(xpos(iz)/(K0ANa*xh(iz)**vsalt)))/(K0Eo*xna(iz)) 							   !!gabi: vpair = vpol!!
  	 	fdisAas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))-(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
    	fdisBas(iz) = (1.0+eta(iz)+eta(iz)*M(iz))/(2.0)-eta(iz)*(	-1.0/eta(iz)+(	(1.0+eta(iz)+eta(iz)*M(iz))/(2.0*eta(iz))	)**2	)**0.5 !!!!!!!!!!!!!!!!!!!!!!!
 	
 	endif
 	fdisANC(iz) = (1.0-fdisAas(iz) )/(1.0 + (K0A*xh(iz))/(xHplus(iz))&
- + (K0ANa*K0A*xpos(iz)* (xh(iz)**(1.0-vsalt)))/(xHplus(iz)) )						   !g
+ + (K0A*xpos(iz)* (xh(iz)**(1.0-vsalt)))/(K0ANa*xHplus(iz)) )						   !g
    fdisBNC(iz) = (1.0-fdisBas(iz) )/(1.0 + (K0B*xh(iz))/(xOHmin(iz))&
- + (K0BCl*K0B*xneg(iz)* (xh(iz)**(1.0-vsalt)))/(xOHmin(iz)) )						   !g
-	fdisANa(iz) = (fdisANC(iz))*(K0A*K0ANa*xpos(iz)* (xh(iz)**(1.0-vsalt) ))/xHplus(iz)
-	fdisBCl(iz) = (fdisBNC(iz))*(K0B*K0BCl*xneg(iz)* (xh(iz)**(1.0-vsalt) ))/xOHmin(iz)
+ + (K0B*xneg(iz)* (xh(iz)**(1.0-vsalt)))/(K0BCl*xOHmin(iz)) )						   !g
+	fdisANa(iz) = (fdisANC(iz))*(K0A*xpos(iz)* (xh(iz)**(1.0-vsalt)) )/(xHplus(iz)*K0ANa)
+	fdisBCl(iz) = (fdisBNC(iz))*(K0B*xneg(iz)* (xh(iz)**(1.0-vsalt)) )/(xOHmin(iz)*K0BCl)
 
   			!KK0check(iz)=-dlog10( (Na/1.0d24)*fdisBas(iz)/(	(1.0-fdisAas(iz)-fdisANa(iz)&
 !-fdisANC(iz))*(1.0-fdisBas(iz)-fdisBNC(iz)-fdisBCl(iz))*xna(iz) )	)/pKeo
