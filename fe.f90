@@ -21,7 +21,7 @@ integer cc, ccc
 
 real*8 Free_energy, F_Mix_s, F_Mix_pos
 real*8 F_Mix_neg, F_Mix_Hplus
-real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupolA, mupolB, pilat, sumas,diffener,sumex
+real*8 Free_energy2, sumpi, sumrho, sumel, sum, mupolA, mupolB, pilat, sumas,diffener,sumex,hcapa,normhcapa
 real*8 F_Mix_OHmin, F_Conf, F_Eq, F_vdW, F_eps, F_electro
 integer i, iz, iiz
 real*8 xtotal(-Xulimit:dimz+Xulimit) ! xtotal for poor solvent
@@ -218,9 +218,24 @@ Free_Energy2 = -sigmaA*dlog(qA)-sigmaB*dlog(qB) + sum -F_vdW
 mupolA = -dlog(qA)
 mupolB = -dlog(qB)
  
+
 ! Pilat
 pilat = sigmaA*mupolA+sigmaB*mupolB - Free_energy
 
+!!h capa 
+
+hcapa=0.0
+normhcapa=0.0
+
+do iz=1,dimz
+
+	normhcapa=normhcapa+(avpolA(iz)+avpolB(iz))*delta/vpol
+	hcapa=hcapa+(avpolA(iz)+avpolB(iz))*iz*delta* delta/vpol
+enddo
+if(1.0d-10 <normhcapa)then
+	hcapa=hcapa/normhcapa
+endif
+print*, 'hcapa, mupolA, mupolB',hcapa ,mupolA,mupolB
 ! Save to disk
 
 write(301,*)cc, ccc, Free_energy
@@ -237,6 +252,7 @@ write(312,*)cc, ccc, Free_energy2
 write(313,*)cc, ccc, mupolA
 write(314,*)cc, ccc, pilat
 write(315,*)cc, ccc, mupolB
+write(316,*)cc, ccc, hcapa
 ! print
 diffener= Free_energy- Free_energy2
 
